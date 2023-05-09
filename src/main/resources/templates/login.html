@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+  <head>
+    <title>Advanced Login Page</title>
+    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+    <style>
+      
+/* Reset default styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the login page container */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f1f1f1;
+}
+
+/* Style the login form container */
+.form {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+/* Style the login form fields */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+/* Style the login button */
+button {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Style the "create account" message */
+.message {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.message a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+/* Set background image */
+.login-page {
+  background-image: url('/static/images/1.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <div class="login-page">
+      <div class="form">
+        <form th:action="@{/login}" method="post" class="login-form">
+          <input type="text" name="username" placeholder="Username" required />
+          <input type="password" name="password" placeholder="password" required />
+          <button type="submit">login</button>
+          <p th:if="${param.error}" class="error-message">Invalid email or password</p>
+          <p class="message">Not registered? <a th:href="@{/signup}">Create an account</a></p>
+        </form>
+
+      </div>
+    </div>
+
+
+<script >
+
+ function validateForm() {
+const form = document.querySelector('form');
+const usernameInput = document.querySelector('input[name="username"]');
+const passwordInput = document.querySelector('input[name="password"]');
+
+form.addEventListener('submit', (event) => {
+  //event.preventDefault();
+  
+  const username = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+  
+  if (!username || !password) {
+    alert('Please enter both email and password');
+    return;
+  }
+
+  
+  // Use AJAX or Fetch to send login request to server and handle response here
+  // ...
+
+});
+}
+
+</script>
+
+  </body>
+</html>

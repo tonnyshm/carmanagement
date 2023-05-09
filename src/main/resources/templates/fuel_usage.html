@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Fuel Expense</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper grey darken-3">
+        <a href="#" class="brand-logo">Fuel Expense Tracker</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a th:href="@{/add_car}">Add Car</a></li>
+            <li><a th:href="@{/home}">Manage Cars</a></li>
+            <li><a th:href="@{/upload-photo}">Upload Car Photo</a></li>
+            <li><a th:href="@{/logout}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h3>Add Fuel Expense</h3>
+    <form th:action="@{/fuel_usage/save}" th:object="${fuelUsage}" method="post">
+        <div class="row">
+            <div class="input-field col s12">
+                <select id="car" name="car"   th:field="*{car.id}" required>
+                    <option value="" disabled selected>Select a car</option>
+                    <option th:each="car : ${cars}" th:value="${car.id}" th:text="${car.model}"></option>
+                </select>
+                <label for="car">Select Car</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="odometer" type="number" name="odometer" class="validate" required>
+                <label for="odometer">Odometer Reading</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="fuelVolume" type="number" name="fuelVolume" class="validate" required>
+                <label for="fuelVolume">Fuel Volume (in liters)</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="pricePerUnit" type="number" name="pricePerUnit" class="validate" step="0.01" required>
+                <label for="pricePerUnit">Price per Unit (in USD)</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Save
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </form>
+    <a class="btn waves-effect waves-light" th:href="@{/fuel_usage_list}">Update/Delete Records<i class="material-icons right">list</i></a>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems, {});
+    });
+  </script>
+
+</body>
+</html>

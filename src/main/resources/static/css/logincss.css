@@ -1,0 +1,64 @@
+
+/* Set background image */
+.login-page {
+  background-image: url('/static/images/1.jpg');
+  background-size: cover;
+  background-position: center;
+
+/* Reset default styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the login page container */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f1f1f1;
+}
+
+/* Style the login form container */
+.form {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+/* Style the login form fields */
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+/* Style the login button */
+button {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Style the "create account" message */
+.message {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.message a {
+  color: #4CAF50;
+  text-decoration: none;
+}

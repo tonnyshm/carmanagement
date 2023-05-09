@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+  <title>My Web Page</title>
+  <link rel="stylesheet" th:href="@{/static/css/home.css}">
+  <style>
+    body {
+  background-image: url("/static/images/home.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  position: relative;
+}
+
+nav a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s, background-color 0.3s;
+  background-color: rgba(255, 255, 255, 0.3); /* Added background color with transparency */
+  border-radius: 5px; /* Added border radius for a smoother appearance */
+}
+
+.nav-link {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+nav a:hover {
+  color: #007bff;
+  background-color: rgba(255, 255, 255, 0.8); /* Changed the background color on hover */
+}
+
+nav .dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(245, 209, 66);
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  width: 100%;
+}
+
+.dropdown-menu a {
+  padding: 8px 16px;
+  white-space: nowrap;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f5f5f5;
+}
+
+  </style>
+</head>
+<body>
+<nav>
+  <ul>
+    <li><a class="nav-link" th:href="@{/}">Home</a></li>
+    <li class="dropdown">
+      <a class="nav-link" th:href="@{/addcar}">My car</a>
+      <ul class="dropdown-menu">
+        <li><a th:href="@{/add_car}">Car Manager</a></li>
+        <li><a th:href="@{/upload-photo}">Upload Car Photo</a></li>
+        <li><a th:href="@{/cardisplay}">View Car Photo</a></li>
+        <li><a th:href="@{/maintenance}">Maintenance</a></li>
+        <li><a th:href="@{/expenses}">Expense</a></li>
+        <li><a th:href="@{/fuel_usage}">FuelUsage</a></li>
+      </ul>
+    </li>
+    <li><a class="nav-link" th:href="@{/emailForm}">Report</a></li>
+    <li class="dropdown">
+   <a class="nav-link" th:href="@{/schedule}">Schedule</a>
+      <ul class="dropdown-menu">
+        <li><a th:href="@{/schedule_maintenance_form}">schedule a Maintenance</a></li>
+        <li><a th:href="@{/scheduled-events}">scheduled-events</a></li>
+      </ul>
+    </li>
+
+    <li class="dropdown">
+      <a class="nav-link" th:href="@{/addcar}">Due Maintenance</a>
+      <ul class="dropdown-menu">
+        <li><a th:href="@{/maintenance_tasks/incomplete}">View Incomplete Maintenance Tasks</a></li>
+      </ul>
+    </li>
+
+
+    <li><a class="nav-link" th:href="@{/logout}">Logout</a></li>
+  </ul>
+</nav>
+<h1>Welcome to My Car App!</h1>
+<br>
+<br>
+<br>
+<br>
+
+<p> The car management system app is designed to help car owners manage their vehicles by keeping
+   track of maintenance schedules, fuel usage, and expenses. With a user-friendly interface, the
+   app makes it easy to input and track important information, set reminders for upcoming maintenance
+   tasks, and generate reports to help you make informed decisions about your car  </p>
+
+<script th:src="@{/static/javascript/home.js}"> </script>
+<script>
+  // Add a click event listener to the logout button
+document.querySelector('nav li:last-child').addEventListener('click', function() {
+  // Do something when the button is clicked, such as redirecting to a logout page
+});
+
+
+</script>
+</body>
+</html>

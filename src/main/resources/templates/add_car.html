@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Car Management App</title>
+
+  <style>
+
+
+    /* Add the previous CSS code here */
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color
+
+
+
+  </style>
+</head>
+<body>
+<!-- Add header and other sections here -->
+
+
+<main>
+  <section class="add-car">
+    <h2>Add your Car</h2>
+    <form th:action="@{${car.id} == null ? '/add-car' : '/update-car/' + ${car.id}}" th:object="${car}" method="post">
+      <div class="form-group">
+        <label for="make">Make</label>
+        <input type="text" id="make" name="make" th:field="*{make}" required>
+      </div>
+      <div class="form-group">
+        <label for="model">Model</label>
+        <input type="text" id="model" name="model" th:field="*{model}" required>
+      </div>
+      <div class="form-group">
+        <label for="vinNumber">VIN Number</label>
+        <input type="text" id="vinNumber" name="vinNumber" th:field="*{vinNumber}" required>
+      </div>
+      <div class="form-group">
+        <label for="yearMade">Year Made</label>
+        <input type="number" id="yearMade" name="yearMade" min="1900" max="2099" step="1"  th:field="*{year}" required>
+      </div>
+      <div class="form-group">
+        <label for="licensePlate">License Plate</label>
+        <input type="text" id="licensePlate" name="licensePlate"  th:field="*{licensePlate}" required>
+      </div>
+      <div class="form-group">
+        <label for="currentMileage">Current Mileage</label>
+        <input type="number" id="currentMileage" name="currentMileage" th:field="*{currentMileage}" required>
+      </div>
+      <div class="form-group">
+        <label for="fuelType">Fuel Type</label>
+        <select id="fuelType" th:field="*{fuelType}">
+          <option th:each="fuelType : ${T(com.CarManagement.CarMan.model.FuelType).values()}"
+                  th:value="${fuelType}" th:text="${fuelType}"></option>
+        </select>
+      </div>
+<!--      <div class="form-group">-->
+<!--        <label for="vehiclePhoto">Vehicle Photo</label>-->
+<!--        <input type="file" id="vehiclePhoto" name="vehiclePhoto" accept="image/*" th:field="*{vehiclePhoto}" >-->
+<!--      </div>-->
+      <button type="submit">Save</button>
+    </form>
+
+    <!-- home.html -->
+    <a th:href="@{/car_list}">Update/Delete Car</a>
+
+  </section>
+</main>
+
+
+
+<!-- Add footer and other sections here -->
+<footer>
+  <p>&copy; 2023 Car Management App. All rights reserved.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Car Photo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="grey darken-4">
+  <div class="nav-wrapper container">
+    <a href="#" class="brand-logo">My App</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a th:href="@{/add_car}">Add Car</a></li>
+      <li><a th:href="@{/home}">Manage Cars</a></li>
+      <li><a th:href="@{/upload-photo}">Upload Car Photo</a></li>
+      <li><a th:href="@{/logout}">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Upload Car Photo</h1>
+  <form method="post" enctype="multipart/form-data" th:action="@{/cars/upload-photo}">
+    <div class="input-field">
+      <select id="carId" name="carId">
+        <option value="" disabled selected>--Select Car--</option>
+        <option th:each="car : ${cars}" th:value="${car.id}" th:text="${car.model}"></option>
+      </select>
+      <label for="carId">Select Car:</label>
+    </div>
+    <div class="file-field input-field">
+      <div class="btn">
+        <span>Upload</span>
+        <input type="file" id="file" name="file" accept="image/*">
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text" placeholder="Select Photo Of Car">
+      </div>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems);
+    });
+  </script>
+</body>
+
+</html>

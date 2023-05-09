@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List of Incomplete Maintenance Tasks</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="grey darken-4">
+  <div class="nav-wrapper container">
+    <a href="#" class="brand-logo">Car Management App</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a th:href="@{/add_car}">Add Car</a></li>
+      <li><a th:href="@{/home}">Manage Cars</a></li>
+      <li><a th:href="@{/upload-photo}">Upload Car Photo</a></li>
+      <li><a th:href="@{/logout}">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>List of Incomplete Maintenance Tasks</h1>
+  <table class="highlight">
+    <thead>
+    <tr>
+      <th>Car</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Due Date</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasks}">
+      <td th:text="${task.car.model}"></td>
+      <td th:text="${task.title}"></td>
+      <td th:text="${task.description}"></td>
+      <td th:text="${task.dueDate}"></td>
+      <td>
+        <a class="waves-effect waves-light btn" th:href="@{/maintenance_task/complete/{id}(id=${task.id})}">Complete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
