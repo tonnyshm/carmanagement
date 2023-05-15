@@ -23,6 +23,11 @@
 
 <div class="container">
   <h3>Fuel Usage List</h3>
+  <!-- Search form -->
+  <form th:action="@{/fuel_usage_list}" method="get">
+    <input type="text" name="searchTerm" th:value="${searchTerm}" placeholder="Search by car model">
+    <button type="submit">Search</button>
+  </form>
   <table class="striped">
     <thead>
     <tr>

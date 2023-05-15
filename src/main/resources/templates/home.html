@@ -69,6 +69,23 @@ nav .dropdown:hover .dropdown-menu {
   background-color: #f5f5f5;
 }
 
+
+.card {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+<!--  margin-bottom: 20px;-->
+  margin-top: 30px;
+}
+
+.card p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+
   </style>
 </head>
 <body>
@@ -111,12 +128,12 @@ nav .dropdown:hover .dropdown-menu {
 <br>
 <br>
 <br>
-
+<div class="card">
 <p> The car management system app is designed to help car owners manage their vehicles by keeping
    track of maintenance schedules, fuel usage, and expenses. With a user-friendly interface, the
    app makes it easy to input and track important information, set reminders for upcoming maintenance
    tasks, and generate reports to help you make informed decisions about your car  </p>
-
+</div>
 <script th:src="@{/static/javascript/home.js}"> </script>
 <script>
   // Add a click event listener to the logout button

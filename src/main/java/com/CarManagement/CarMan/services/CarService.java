@@ -6,6 +6,7 @@ import com.CarManagement.CarMan.model.User;
 import com.CarManagement.CarMan.repository.CarRepository;
 import com.CarManagement.CarMan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,6 +46,14 @@ public class CarService {
         return carRepository.findByUser(user);
     }
 
+    public List<Car> searchCars(String searchTerm) {
+        return carRepository.findByMakeContainingIgnoreCaseOrModelContainingIgnoreCase(searchTerm, searchTerm);
+    }
+
+    public List<Car> findAllCars() {
+        return carRepository.findAll();
+    }
+
 
     public List<Car> findAll() {
         return carRepository.findAll();
@@ -72,6 +81,7 @@ public class CarService {
         return carRepository.findByUser_Username(username);
     }
 
+    @Cacheable(cacheNames = "cars", key = "#username")
     public List<Car> findByUsername(String username) {
         return carRepository.findByUser_Username(username);
     }

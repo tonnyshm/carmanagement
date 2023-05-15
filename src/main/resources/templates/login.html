@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <html>
-  <head>
-    <title>Advanced Login Page</title>
-    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
-    <style>
-      
+<head>
+  <title>Advanced Login Page</title>
+  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+  <style>
+
 /* Reset default styles */
 * {
   box-sizing: border-box;
@@ -16,6 +16,7 @@
 /* Style the login page container */
 .login-page {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -71,22 +72,28 @@ button {
   background-position: center;
 }
 
+.title {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #fff;
+}
 
     </style>
-  </head>
-  <body>
-    <div class="login-page">
-      <div class="form">
-        <form th:action="@{/login}" method="post" class="login-form">
-          <input type="text" name="username" placeholder="Username" required />
-          <input type="password" name="password" placeholder="password" required />
-          <button type="submit">login</button>
-          <p th:if="${param.error}" class="error-message">Invalid email or password</p>
-          <p class="message">Not registered? <a th:href="@{/signup}">Create an account</a></p>
-        </form>
-
-      </div>
-    </div>
+</head>
+<body>
+<div class="login-page">
+  <h2 class="title">Car Management App</h2>
+  <div class="form">
+    <form th:action="@{/login}" method="post" class="login-form">
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+      <p th:if="${param.error}" class="error-message">Invalid email or password</p>
+      <p class="message">Not registered? <a th:href="@{/signup}">Create an account</a></p>
+    </form>
+  </div>
+</div>
 
 
 <script >
@@ -98,16 +105,16 @@ const passwordInput = document.querySelector('input[name="password"]');
 
 form.addEventListener('submit', (event) => {
   //event.preventDefault();
-  
+
   const username = emailInput.value.trim();
   const password = passwordInput.value.trim();
-  
+
   if (!username || !password) {
     alert('Please enter both email and password');
     return;
   }
 
-  
+
   // Use AJAX or Fetch to send login request to server and handle response here
   // ...
 
@@ -115,6 +122,9 @@ form.addEventListener('submit', (event) => {
 }
 
 </script>
+<footer>
+  <p>&copy; 2023 Car Management App. All rights reserved.</p>
+</footer>
 
-  </body>
+</body>
 </html>

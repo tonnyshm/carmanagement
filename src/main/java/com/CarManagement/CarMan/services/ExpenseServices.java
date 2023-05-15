@@ -5,6 +5,9 @@ import com.CarManagement.CarMan.model.FuelUsage;
 import com.CarManagement.CarMan.model.User;
 import com.CarManagement.CarMan.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,6 +42,14 @@ public class ExpenseServices {
         return expenseRepository.findByUser(user);
     }
 
+    public Page<Expense> findByUser(User user, int pageNo, int pageSize) {
+        return expenseRepository.findByUser(user, PageRequest.of(pageNo - 1, pageSize));
+    }
+
+    public Page<Expense> findByModelAndUser(String model, User user, int pageNo, int pageSize) {
+        return expenseRepository.findByCar_ModelAndUser(model, user, PageRequest.of(pageNo - 1, pageSize));
+    }
+
     public void delete(Expense expense) {
         expenseRepository.delete(expense);
     }
@@ -48,6 +59,7 @@ public class ExpenseServices {
         return expenseRepository.findById(id);
     }
 
+    @Cacheable("expenses")
     public List<Expense> findAll() {
         return expenseRepository.findAll();
     }

@@ -6,6 +6,7 @@ import com.CarManagement.CarMan.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -147,6 +148,24 @@ public class CarController {
     }
 
 
+    @GetMapping("/cars/photo/{id}")
+    public ResponseEntity<byte[]> downloadCarPhoto(@PathVariable Long id) {
+        CarPhoto carPhoto = carPhotoService.getCarPhotoById(id);
+
+        if (carPhoto != null) {
+            byte[] data = carPhoto.getData();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            headers.setContentDispositionFormData("attachment", "car_photo_" + id + ".jpg");
+
+            return new ResponseEntity<>(data, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
 
 
 
@@ -250,23 +269,7 @@ public class CarController {
 
 
 
-    @GetMapping("/fuel_usage")
-    public String showFuelUsageForm(Model model) {
-        FuelUsage fuelUsage = new FuelUsage();
-        List<Car> cars = carService.getCarsForCurrentUser();
-        model.addAttribute("fuelUsage",fuelUsage);
-        model.addAttribute("cars", cars);
-        return "fuel_usage";
-    }
 
-
-    @PostMapping("/fuel_usage/save")
-    public String submitFuelUsageForm(@ModelAttribute("fuelUsage") FuelUsage fuelUsage) {
-        // Save the maintenanceTask to the database using the MaintenanceTaskService
-        fuelUsageServices.saveFuelUsage(fuelUsage);
-        // Redirect to a success page or display a message
-        return "redirect:/home";
-    }
 
 
     @GetMapping("/expenses")
@@ -289,10 +292,28 @@ public class CarController {
 
     // Change the mapping to /expenses_list
     @GetMapping("/expenses_list")
-    public String showExpenses(Model model, Authentication authentication) {
+    public String showExpenses(Model model, Authentication authentication,
+                               @RequestParam(defaultValue = "1") int pageNo,
+                               @RequestParam(defaultValue = "10") int pageSize) {
+
         User user = userService.findByUsername(authentication.getName());
-        List<Expense> expenses = expenseServices.findByUser(user);
-        model.addAttribute("expenses", expenses);
+        Page<Expense> page = expenseServices.findByUser(user, pageNo, pageSize);
+        model.addAttribute("page", page);
+
+        return "expenses_list";
+    }
+
+    @GetMapping("/search_expenses")
+    public String searchExpenses(Model model, Authentication authentication,
+                                 @RequestParam String searchTerm,
+                                 @RequestParam(defaultValue = "1") int pageNo,
+                                 @RequestParam(defaultValue = "10") int pageSize) {
+
+        User user = userService.findByUsername(authentication.getName());
+        Page<Expense> page = expenseServices.findByModelAndUser(searchTerm, user, pageNo, pageSize);
+        model.addAttribute("page", page);
+        model.addAttribute("searchTerm", searchTerm);
+
         return "expenses_list";
     }
 
@@ -328,11 +349,18 @@ public class CarController {
 
 
     @GetMapping("/fuel_usage_list")
-    public ModelAndView fuelUsageList() {
+    public ModelAndView fuelUsageList(@RequestParam(required = false) String searchTerm) {
         ModelAndView modelAndView = new ModelAndView("fuel_usage_list");
-        modelAndView.addObject("fuelUsages", fuelUsageServices.findAll());
+        List<FuelUsage> fuelUsages;
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            fuelUsages = fuelUsageServices.searchFuelUsages(searchTerm);
+        } else {
+            fuelUsages = fuelUsageServices.findAllFuelUsages();
+        }
+        modelAndView.addObject("fuelUsages", fuelUsages);
         return modelAndView;
     }
+
 
     @GetMapping("/fuel_usage/update/{id}")
     public String showUpdateForm(@PathVariable("id") Long id, Model model) {
@@ -356,10 +384,37 @@ public class CarController {
         return "redirect:/fuel_usage_list";
     }
 
+
+
+    @GetMapping("/fuel_usage")
+    public String showFuelUsageForm(Model model) {
+        FuelUsage fuelUsage = new FuelUsage();
+        List<Car> cars = carService.getCarsForCurrentUser();
+        model.addAttribute("fuelUsage",fuelUsage);
+        model.addAttribute("cars", cars);
+        return "fuel_usage";
+    }
+
+
+    @PostMapping("/fuel_usage/save")
+    public String submitFuelUsageForm(@ModelAttribute("fuelUsage") FuelUsage fuelUsage) {
+        // Save the maintenanceTask to the database using the MaintenanceTaskService
+        fuelUsageServices.saveFuelUsage(fuelUsage);
+        // Redirect to a success page or display a message
+        return "redirect:/home";
+    }
+
+
     @GetMapping("/car_list")
-    public ModelAndView carList() {
+    public ModelAndView carList(@RequestParam(required = false) String searchTerm) {
         ModelAndView modelAndView = new ModelAndView("car_list");
-        modelAndView.addObject("cars", carService.findAll());
+        List<Car> cars;
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            cars = carService.searchCars(searchTerm);
+        } else {
+            cars = carService.findAllCars();
+        }
+        modelAndView.addObject("cars", cars);
         return modelAndView;
     }
 

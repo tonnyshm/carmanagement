@@ -75,7 +75,7 @@ public class PdfReportGenerator {
             table.addCell(String.valueOf(fuelUsage.getOdometer())+" KM").toString();
             table.addCell(String.valueOf(fuelUsage.getFuelVolume()+" L").toString());
             table.addCell(String.valueOf(fuelUsage.getPricePerUnit()+"$"));
-            table.addCell(String.valueOf(fuelUsage.getTotalPrice()));
+            table.addCell(String.valueOf(fuelUsage.getTotalPrice())+"$");
 
         }
 

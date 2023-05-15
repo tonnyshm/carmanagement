@@ -77,7 +77,14 @@
         <p>Uploaded By: <span th:text="${carPhoto.user.username}"></span></p>
       </div>
       <div class="card-action">
-        <a th:href="@{/cars/photo(id=${carPhoto.id},ext='jpg')}" download th:text="'Download Car Photo ' + ${carPhoto.id}" class="btn">Download</a>
+
+
+          <a th:href="@{/cars/photo/{id}(id=${carPhoto.id})}" download th:text="'Download Car Photo ' + ${carPhoto.id}" class="btn">Download</a>
+
+
+
+
+
 
         <form method="post" th:action="@{/cars/delete-photo}">
           <input type="hidden" name="id" th:value="${carPhoto.id}">

@@ -13,4 +13,6 @@ import java.util.List;
 public interface FuelUsageRepository extends JpaRepository<FuelUsage, Long> {
     List<FuelUsage> findByUser(User user);
     List<FuelUsage> findByUser_Username(String username);
+
+    List<FuelUsage> findByCar_ModelContainingIgnoreCase(String model);
 }

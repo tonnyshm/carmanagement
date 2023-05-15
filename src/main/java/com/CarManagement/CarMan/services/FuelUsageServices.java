@@ -6,6 +6,7 @@ import com.CarManagement.CarMan.model.MaintenanceTask;
 import com.CarManagement.CarMan.model.User;
 import com.CarManagement.CarMan.repository.FuelUsageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public class FuelUsageServices {
     private UsersDetailsServicesImpl userService;
 
     public FuelUsage saveFuelUsage(FuelUsage fuelUsage) {
+
+        double totalPrice = fuelUsage.getFuelVolume() * fuelUsage.getPricePerUnit();
+        fuelUsage.setTotalPrice(totalPrice);
         // Get the current user from the UserService
         User currentUser = userService.getCurrentUser();
 
@@ -50,6 +54,15 @@ public class FuelUsageServices {
 
     public List<FuelUsage> findByUsername(String username) {
         return fuelUsageRepository.findByUser_Username(username);
+    }
+
+    public List<FuelUsage> searchFuelUsages(String searchTerm) {
+        return fuelUsageRepository.findByCar_ModelContainingIgnoreCase(searchTerm);
+    }
+
+    @Cacheable("fuelUsages")
+    public List<FuelUsage> findAllFuelUsages() {
+        return fuelUsageRepository.findAll();
     }
 
 }

@@ -42,6 +42,10 @@
 
 <div class="container">
   <h1>Expenses</h1>
+  <form th:action="@{/search_expenses}" method="get">
+    <input type="text" name="searchTerm" th:value="${searchTerm}" placeholder="Search by car model">
+    <button type="submit">Search</button>
+  </form>
   <table>
     <thead>
     <tr>
@@ -53,7 +57,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="expense : ${expenses}">
+    <tr th:each="expense : ${page.content}">
       <td th:text="${expense.description}"></td>
       <td th:text="${expense.car.model}"></td>
       <td th:text="${expense.expenseDate}"></td>
