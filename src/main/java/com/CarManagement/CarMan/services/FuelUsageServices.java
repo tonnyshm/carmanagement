@@ -65,4 +65,13 @@ public class FuelUsageServices {
         return fuelUsageRepository.findAll();
     }
 
+
+    public List<FuelUsage> searchFuelUsagesByUserAndCarModel(User user, String model) {
+        return fuelUsageRepository.findByUserAndCarModelContainingIgnoreCase(user, model);
+    }
+
+    public List<FuelUsage> findAllFuelUsagesByUser(User user) {
+        return fuelUsageRepository.findByUser(user);
+    }
+
 }

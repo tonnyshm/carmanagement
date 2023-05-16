@@ -148,24 +148,6 @@ public class CarController {
     }
 
 
-    @GetMapping("/cars/photo/{id}")
-    public ResponseEntity<byte[]> downloadCarPhoto(@PathVariable Long id) {
-        CarPhoto carPhoto = carPhotoService.getCarPhotoById(id);
-
-        if (carPhoto != null) {
-            byte[] data = carPhoto.getData();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            headers.setContentDispositionFormData("attachment", "car_photo_" + id + ".jpg");
-
-            return new ResponseEntity<>(data, headers, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-
-
 
 
 
@@ -269,7 +251,23 @@ public class CarController {
 
 
 
+    @GetMapping("/fuel_usage")
+    public String showFuelUsageForm(Model model) {
+        FuelUsage fuelUsage = new FuelUsage();
+        List<Car> cars = carService.getCarsForCurrentUser();
+        model.addAttribute("fuelUsage",fuelUsage);
+        model.addAttribute("cars", cars);
+        return "fuel_usage";
+    }
 
+
+    @PostMapping("/fuel_usage/save")
+    public String submitFuelUsageForm(@ModelAttribute("fuelUsage") FuelUsage fuelUsage) {
+        // Save the maintenanceTask to the database using the MaintenanceTaskService
+        fuelUsageServices.saveFuelUsage(fuelUsage);
+        // Redirect to a success page or display a message
+        return "redirect:/home";
+    }
 
 
     @GetMapping("/expenses")
@@ -349,17 +347,19 @@ public class CarController {
 
 
     @GetMapping("/fuel_usage_list")
-    public ModelAndView fuelUsageList(@RequestParam(required = false) String searchTerm) {
-        ModelAndView modelAndView = new ModelAndView("fuel_usage_list");
+    public String fuelUsageList(Model model, Authentication authentication,
+                                @RequestParam(required = false) String searchTerm) {
+        User user = userService.findByUsername(authentication.getName());
         List<FuelUsage> fuelUsages;
         if (searchTerm != null && !searchTerm.isEmpty()) {
-            fuelUsages = fuelUsageServices.searchFuelUsages(searchTerm);
+            fuelUsages = fuelUsageServices.searchFuelUsagesByUserAndCarModel(user, searchTerm);
         } else {
-            fuelUsages = fuelUsageServices.findAllFuelUsages();
+            fuelUsages = fuelUsageServices.findAllFuelUsagesByUser(user);
         }
-        modelAndView.addObject("fuelUsages", fuelUsages);
-        return modelAndView;
+        model.addAttribute("fuelUsages", fuelUsages);
+        return "fuel_usage_list";
     }
+
 
 
     @GetMapping("/fuel_usage/update/{id}")
@@ -386,37 +386,22 @@ public class CarController {
 
 
 
-    @GetMapping("/fuel_usage")
-    public String showFuelUsageForm(Model model) {
-        FuelUsage fuelUsage = new FuelUsage();
-        List<Car> cars = carService.getCarsForCurrentUser();
-        model.addAttribute("fuelUsage",fuelUsage);
-        model.addAttribute("cars", cars);
-        return "fuel_usage";
-    }
-
-
-    @PostMapping("/fuel_usage/save")
-    public String submitFuelUsageForm(@ModelAttribute("fuelUsage") FuelUsage fuelUsage) {
-        // Save the maintenanceTask to the database using the MaintenanceTaskService
-        fuelUsageServices.saveFuelUsage(fuelUsage);
-        // Redirect to a success page or display a message
-        return "redirect:/home";
-    }
-
-
     @GetMapping("/car_list")
-    public ModelAndView carList(@RequestParam(required = false) String searchTerm) {
+    public ModelAndView carList(Authentication authentication, @RequestParam(required = false) String searchTerm) {
         ModelAndView modelAndView = new ModelAndView("car_list");
+        User user = userService.findByUsername(authentication.getName());
         List<Car> cars;
         if (searchTerm != null && !searchTerm.isEmpty()) {
-            cars = carService.searchCars(searchTerm);
+            cars = carService.searchCarsByUser(user, searchTerm);
         } else {
-            cars = carService.findAllCars();
+            cars = carService.findAllCarsByUser(user);
         }
         modelAndView.addObject("cars", cars);
         return modelAndView;
     }
+
+
+
 
     @GetMapping("/update-car/{id}")
     public ModelAndView updateCar(@PathVariable("id") Long id) {

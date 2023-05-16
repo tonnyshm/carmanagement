@@ -98,5 +98,15 @@ public class CarService {
         return carRepository.findByUser(user);
     }
 
+
+    public List<Car> findAllCarsByUser(User user) {
+        return carRepository.findByUser(user);
+    }
+    public List<Car> searchCarsByUser(User user, String searchTerm) {
+        return carRepository.findByUserAndModelContainingIgnoreCase(user, searchTerm);
+    }
+
+
+
 }
 

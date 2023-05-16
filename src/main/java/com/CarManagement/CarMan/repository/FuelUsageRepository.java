@@ -1,5 +1,6 @@
 package com.CarManagement.CarMan.repository;
 
+import com.CarManagement.CarMan.model.Car;
 import com.CarManagement.CarMan.model.Expense;
 import com.CarManagement.CarMan.model.FuelUsage;
 import com.CarManagement.CarMan.model.User;
@@ -14,5 +15,6 @@ public interface FuelUsageRepository extends JpaRepository<FuelUsage, Long> {
     List<FuelUsage> findByUser(User user);
     List<FuelUsage> findByUser_Username(String username);
 
+    List<FuelUsage> findByUserAndCarModelContainingIgnoreCase(User user, String model);
     List<FuelUsage> findByCar_ModelContainingIgnoreCase(String model);
 }
